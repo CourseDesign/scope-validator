@@ -1,0 +1,31 @@
+{
+  "name": "test-scope-validator",
+  "version": "1.0.0",
+  "description": "The example package of Scope Validator",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./dist",
+    "compile": "tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prepublishOnly": "cross-env NODE_ENV=production npm run build"
+  },
+  "author": "Su-Yong",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.6.4",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.8.1",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "scope-validator-core": "^1.0.0"
+  }
+}
