@@ -1,11 +1,13 @@
+import { ShapeValidator } from './validator/shape-validator';
+
 export class Shape {
   name: string;
 
-  regex: RegExp;
+  validator: ShapeValidator;
 
-  constructor(name: string, regex = /[^a-z0-9-]+/g) {
+  constructor(name: string, validator: ShapeValidator) {
     this.name = name;
-    this.regex = regex;
+    this.validator = validator;
   }
 }
 

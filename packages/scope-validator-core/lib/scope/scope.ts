@@ -1,5 +1,6 @@
 import { ScopeShape } from './scope-shape';
 import { ScopeValidator } from './scope-validator';
+import { ERROR, Result } from '../util';
 
 export class Scope<T extends ScopeShape> {
   private readonly name: string;
@@ -15,45 +16,19 @@ export class Scope<T extends ScopeShape> {
     this.validator = new ScopeValidator(ScopeShapeClass);
   }
 
-  validate(comparisonScope?: Scope<T>): void {
+  validate(comparisonScope?: Scope<T>): Result<void> {
     if (!comparisonScope) {
-      this.validator.validate(this.name);
-    } else {
-      // 서로비교
+      return this.validator.validate(this.name);
     }
+
+    // 서로 비교
+    return ERROR('not implemented');
   }
 }
 
 export default {
   Scope,
 };
-
-/*
-const scope = new Scope(ScopeShape, 'name');
-
-1. shape 확인
-2. 요구하는 scope 확인.
-
-const builder = new ScopeBuilder(TestScopeShape);
-
-const scope1 = builder.build('create:user.username:self');
-const scope2 = builder.build('create:test:self');
-
-await scope1.validate(); // shape 가 맞는지 확인
-await scope2.validate();
-await scope1.validate(scope2);
-*/
-
-/*
-
-const scope1 = new Scope(TestScopeShape, 'create:test:all')
-const scope2 = new Scope(TestScopeShape, 'create:test:all')
-
-await scope1.validate()
-await scope2.validate()
-await scope1.validate(scope2);
-
- */
 
 /*
 koa-scope-validator

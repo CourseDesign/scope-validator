@@ -9,5 +9,8 @@
     "project": [
       "tsconfig.json"
     ]
+  },
+  "rules": {
+    "import/no-cycle": "warn"
   }
 }

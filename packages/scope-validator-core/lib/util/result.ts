@@ -1,9 +1,9 @@
 export interface Result<T> {
-  ok?: T;
+  ok?: T | boolean;
   error?: Error;
 }
 
-export const OK = <T>(value?: T): Result<T> => ({ ok: value });
+export const OK = <T>(value?: T): Result<T> => ({ ok: value ?? true });
 
 export const ERROR = (error: Error | string): Result<any> => {
   let result: Error;
