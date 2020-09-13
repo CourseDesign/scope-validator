@@ -1,8 +1,8 @@
-import { Shape } from './shape';
+import { RequiredShape } from './required-shape';
 import { Divider } from './divider';
 
-export class VariableShape extends Shape {
-  private divider: Divider;
+export class VariableShape extends RequiredShape {
+  divider: Divider;
 
   constructor(name: string, divider: Divider) {
     super(name);

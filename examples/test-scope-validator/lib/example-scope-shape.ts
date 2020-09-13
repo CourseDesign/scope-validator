@@ -1,19 +1,24 @@
-// eslint-disable-next-line max-classes-per-file
 import {
   Divider,
+  OptionalShape,
   RequiredShape,
-  Shape,
   VariableShape,
-} from 'scope-validator-core/dist/scope/shape';
+} from 'scope-validator-core/dist/shape';
+import { ScopeShape } from 'scope-validator-core/dist/scope';
 
-class ExampleScopeShape extends ScopeShape {
+export class ExampleScopeShape extends ScopeShape {
   constructor() {
-    super([
+    super(
+      {
+        divider: new Divider(':'),
+      },
       new RequiredShape('action'),
-      new Divider(':'),
       new VariableShape('resource', new Divider('.')),
-      new Divider(':'),
-      new Shape('restricter'),
-    ]);
+      new OptionalShape('restricter', 'self')
+    );
   }
 }
+
+export default {
+  ExampleScopeShape,
+};
