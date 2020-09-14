@@ -1,6 +1,6 @@
-import { ScopeValidator } from './scope-validator';
+import ScopeValidator from './scope-validator';
 
-export class ScopeValidatorManager {
+export default class ScopeValidatorManager {
   scopeValidators: ScopeValidator[] = [];
 
   context: Record<string, unknown> = {};
@@ -23,5 +23,3 @@ export class ScopeValidatorManager {
     return scopes.map((scope) => this.validateOne(scope));
   }
 }
-
-export default ScopeValidatorManager;

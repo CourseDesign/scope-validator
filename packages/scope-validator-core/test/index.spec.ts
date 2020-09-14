@@ -1,5 +1,5 @@
-import { ScopeValidatorManager } from '../lib/scope-validator-manager';
-import { ScopeValidator } from '../lib/scope-validator';
+import ScopeValidatorManager from '../lib/scope-validator-manager';
+import ScopeValidator from '../lib/scope-validator';
 
 describe('sucess', () => {
   const TestValidator = new (class extends ScopeValidator {

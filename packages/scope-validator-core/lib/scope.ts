@@ -1,3 +1,1 @@
-export class Scope {}
-
-export default Scope;
+export default class Scope {}
