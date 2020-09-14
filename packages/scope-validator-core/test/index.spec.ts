@@ -1,13 +1,9 @@
 import ScopeValidatorManager from '../lib/scope-validator-manager';
 import ScopeValidator from '../lib/scope-validator';
+import ScopeValidatorFactory from '../lib/scope-validator-factory';
 
 describe('sucess', () => {
-  const TestValidator = new (class extends ScopeValidator {
-    // eslint-disable-next-line class-methods-use-this
-    validate(name: string) {
-      return true;
-    }
-  })();
+  const TestValidator = ScopeValidatorFactory.create(() => false);
 
   xit('validate', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
