@@ -1,8 +1,7 @@
 import ScopeValidatorManager from '../lib/scope-validator-manager';
-import ScopeValidator from '../lib/scope-validator';
 import ScopeValidatorFactory from '../lib/scope-validator-factory';
 
-describe('sucess', () => {
+describe('success', () => {
   const TestValidator = ScopeValidatorFactory.create(() => false);
 
   xit('validate', () => {

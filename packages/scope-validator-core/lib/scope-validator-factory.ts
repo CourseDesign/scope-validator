@@ -18,8 +18,4 @@ export default class ScopeValidatorFactory {
 
     return new CustomScopeValidator();
   }
-
-  static match(pattern: string, validator: ScopeValidatorFunction) {
-
-  }
 }
