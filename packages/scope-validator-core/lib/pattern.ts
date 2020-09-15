@@ -3,7 +3,7 @@ export default class Pattern {
 
   get regex(): RegExp {
     const regex = this.str
-      .replace(/(\${(.*)})/g, '*')
+      .replace(/(\${[\w~!@#$%^&()[\]]+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
       .replace(/(\*)/g, '(.+)');
 
@@ -18,18 +18,27 @@ export default class Pattern {
     return this.regex.test(compare);
   }
 
-  getParameters(compare: string): string[] {
-    const result: string[] = [];
+  getParameters(compare: string): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
 
-    compare.match(this.regex);
+    let parameterNames = this.str.split(/(?:\$\{|\})/g);
+    parameterNames = parameterNames.filter((value, index) => index % 2);
 
-    return result;
-  }
+    const regex = new RegExp(
+      this.str
+        .replace(/(\${[\w~!@#$%^&()[\]]+})/g, '*')
+        .replace(/[$^.+?]/g, '\\$&')
+        .replace(/(\*)/g, ')(.+)(?:')
+        .replace(/^(.*)/, '(?:$&')
+        .replace(/(.*)$/, '$&)')
+    );
 
-  getWildcard(compare: string): string[] {
-    const result: string[] = [];
+    const parameterValues = compare.match(regex);
+    parameterValues?.shift();
 
-    this.str.match()?.forEach((match) => result.push(match));
+    parameterNames.forEach((name, index) => {
+      result[name] = parameterValues?.[index];
+    });
 
     return result;
   }

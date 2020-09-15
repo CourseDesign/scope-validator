@@ -8,8 +8,12 @@ type ScopeValidatorFunction = (
 ) => boolean;
 
 export default class ScopeValidatorFactory {
-  static create(func: ScopeValidatorFunction): ScopeValidator {
+  static create(pattern: string, func: ScopeValidatorFunction): ScopeValidator {
     const CustomScopeValidator = class extends ScopeValidator {
+      constructor() {
+        super(pattern);
+      }
+
       // eslint-disable-next-line class-methods-use-this
       validate(name: string, context: ScopeValidatorContext) {
         return func(name, context);

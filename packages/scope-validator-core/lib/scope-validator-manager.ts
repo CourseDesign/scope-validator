@@ -9,14 +9,19 @@ export default class ScopeValidatorManager {
     this.use(...scopeValidators);
   }
 
-  use(...scopeValidators: ScopeValidator[]) {
+  use(...scopeValidators: ScopeValidator[]): void {
     this.scopeValidators.push(...scopeValidators);
   }
 
   validateOne(scope: string): boolean {
     return this.scopeValidators
-      .filter((validator) => validator.match(scope))
-      .every((validator) => validator.validate(scope, this.context));
+      .filter((validator) => validator.test(scope))
+      .every((validator) =>
+        validator.validate(scope, {
+          received: this.context,
+          parameters: validator.pattern.getParameters(scope),
+        })
+      );
   }
 
   validate(...scopes: string[]): boolean[] {

@@ -7,15 +7,15 @@ type ScopeValidatorFunction = (
 ) => boolean;
 
 export default abstract class ScopeValidator {
-  static match(pattern: string, validator: ScopeValidatorFunction) {
+  pattern: Pattern;
 
+  protected constructor(pattern: string | Pattern) {
+    if (pattern instanceof Pattern) this.pattern = pattern;
+    else this.pattern = new Pattern(pattern);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   test(str: string): boolean {
-    const pattern = new Pattern(str);
-
-    return pattern.test(str);
+    return this.pattern.test(str);
   }
 
   abstract validate(name: string, context: ScopeValidatorContext): boolean;

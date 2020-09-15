@@ -1,5 +1,5 @@
 export default interface ScopeValidatorContext {
-  parameters?: string[];
+  parameters?: Record<string, unknown>;
 
   received?: Record<string, unknown>;
 }
