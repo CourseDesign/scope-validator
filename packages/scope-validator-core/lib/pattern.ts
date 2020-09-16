@@ -27,7 +27,7 @@ export default class Pattern {
     const regexStr = this.str
       .replace(/(\${\w+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
-      .replace('*', '(\\w+)')
+      .replace(/\*/g, '(\\w+)')
       .replace(/(\*)/g, ')(.+)(?:')
       .replace(/^(.*)/, '(?:$&')
       .replace(/(.*)$/, '$&)');
