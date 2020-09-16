@@ -1,7 +1,7 @@
 {
-  "name": "scope-validator-core",
+  "name": "scope-validator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pattern matching based Oauth2.0 scope validation library",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",

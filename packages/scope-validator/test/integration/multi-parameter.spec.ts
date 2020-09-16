@@ -1,4 +1,4 @@
-import { ScopeValidatorManager, ScopeValidatorFactory } from '../../lib';
+import { ScopeValidatorFactory, ScopeValidatorManager } from '../../lib';
 
 const TestValidator1 = ScopeValidatorFactory.create(
   // eslint-disable-next-line no-template-curly-in-string
