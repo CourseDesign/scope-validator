@@ -1,7 +1,7 @@
 import ScopeValidatorContext from './scope-validator-context';
 import Pattern from './pattern';
 
-export default abstract class ScopeValidator {
+export default abstract class ScopeValidator<T> {
   pattern: Pattern;
 
   protected constructor(pattern: string | Pattern) {
@@ -13,5 +13,5 @@ export default abstract class ScopeValidator {
     return this.pattern.test(str);
   }
 
-  abstract validate(name: string, context: ScopeValidatorContext): boolean;
+  abstract validate(name: string, context: ScopeValidatorContext<T>): boolean;
 }

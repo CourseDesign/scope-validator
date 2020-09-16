@@ -17,6 +17,12 @@ const TestValidator2 = ScopeValidatorFactory.create(
   () => false
 );
 
+const TestValidator3 = ScopeValidatorFactory.create<string>(
+  // eslint-disable-next-line no-template-curly-in-string
+  'create:client:${restricter}',
+  (name, { received }) => received === 'test'
+);
+
 describe('success', () => {
   it('validate scope', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
@@ -71,6 +77,18 @@ describe('success', () => {
     );
 
     expect(result).toEqual([false, false, false]);
+  });
+
+  it('validate scope string context', () => {
+    const scopeValidatorManager = new ScopeValidatorManager<string>();
+    scopeValidatorManager.use(TestValidator3);
+
+    const result = scopeValidatorManager.validate(
+      ['create:client:all'],
+      'test'
+    );
+
+    expect(result).toEqual([true]);
   });
 });
 
