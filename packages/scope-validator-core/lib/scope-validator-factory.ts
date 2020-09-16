@@ -18,7 +18,7 @@ export default class ScopeValidatorFactory<T> {
       }
 
       // eslint-disable-next-line class-methods-use-this
-      validate(name: string, context: ScopeValidatorContext<T>) {
+      validate(name: string, context: ScopeValidatorContext<T>): boolean {
         return func(name, context);
       }
     };
