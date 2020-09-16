@@ -3,11 +3,11 @@ export default class Pattern {
 
   get regex(): RegExp {
     const regex = this.str
-      .replace(/(\${[\w~!@#$%^&()[\]]+})/g, '*')
+      .replace(/(\${\w+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
-      .replace(/(\*)/g, '(.+)');
+      .replace(/\*/g, '(\\w+)');
 
-    return new RegExp(regex);
+    return new RegExp(`^${regex}$`);
   }
 
   constructor(str: string) {
@@ -21,17 +21,18 @@ export default class Pattern {
   getParameters(compare: string): Record<string, unknown> {
     const result: Record<string, unknown> = {};
 
-    let parameterNames = this.str.split(/(?:\$\{|\})/g);
+    let parameterNames = this.str.split(/(?:\${|})/g);
     parameterNames = parameterNames.filter((value, index) => index % 2);
 
-    const regex = new RegExp(
-      this.str
-        .replace(/(\${[\w~!@#$%^&()[\]]+})/g, '*')
-        .replace(/[$^.+?]/g, '\\$&')
-        .replace(/(\*)/g, ')(.+)(?:')
-        .replace(/^(.*)/, '(?:$&')
-        .replace(/(.*)$/, '$&)')
-    );
+    const regexStr = this.str
+      .replace(/(\${\w+})/g, '*')
+      .replace(/[$^.+?]/g, '\\$&')
+      .replace('*', '(\\w+)')
+      .replace(/(\*)/g, ')(.+)(?:')
+      .replace(/^(.*)/, '(?:$&')
+      .replace(/(.*)$/, '$&)');
+
+    const regex = new RegExp(`^${regexStr}$`);
 
     const parameterValues = compare.match(regex);
     parameterValues?.shift();

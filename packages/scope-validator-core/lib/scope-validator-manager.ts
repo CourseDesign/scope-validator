@@ -14,22 +14,28 @@ export default class ScopeValidatorManager {
   }
 
   validateOne(scope: string): boolean {
-    return this.scopeValidators
-      .filter((validator) => validator.test(scope))
-      .every((validator) =>
+    const matchValidators = this.scopeValidators.filter((validator) =>
+      validator.test(scope)
+    );
+
+    return (
+      matchValidators.length >= 1 &&
+      matchValidators.every((validator) =>
         validator.validate(scope, {
           received: this.context,
           parameters: validator.pattern.getParameters(scope),
         })
-      );
+      )
+    );
   }
 
   validateMany(...scopes: string[]): boolean[] {
     return scopes.map((scope) => this.validateOne(scope));
   }
 
-  validate(scope: string[], context: Record<string, unknown>): boolean[] {
-    this.context = context;
+  validate(scope: string[], context: Record<string, unknown> = {}): boolean[] {
+    this.setContext(context);
+
     return this.validateMany(...scope);
   }
 
