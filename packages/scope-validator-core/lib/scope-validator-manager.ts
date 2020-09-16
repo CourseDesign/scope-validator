@@ -1,9 +1,9 @@
 import ScopeValidator from './scope-validator';
 
 export default class ScopeValidatorManager {
-  scopeValidators: ScopeValidator[] = [];
+  private readonly scopeValidators: ScopeValidator[] = [];
 
-  context: Record<string, unknown> = {};
+  private context: Record<string, unknown> = {};
 
   constructor(...scopeValidators: ScopeValidator[]) {
     this.use(...scopeValidators);
@@ -24,7 +24,16 @@ export default class ScopeValidatorManager {
       );
   }
 
-  validate(...scopes: string[]): boolean[] {
+  validateMany(...scopes: string[]): boolean[] {
     return scopes.map((scope) => this.validateOne(scope));
+  }
+
+  validate(scope: string[], context: Record<string, unknown>): boolean[] {
+    this.context = context;
+    return this.validateMany(...scope);
+  }
+
+  setContext(context: Record<string, unknown>): void {
+    this.context = context;
   }
 }

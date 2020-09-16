@@ -43,10 +43,3 @@ export default class Pattern {
     return result;
   }
 }
-
-/*
-
-* 와일드카드
-${param} 파라미터
-
- */

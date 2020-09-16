@@ -1,11 +1,6 @@
 import ScopeValidatorContext from './scope-validator-context';
 import Pattern from './pattern';
 
-type ScopeValidatorFunction = (
-  name: string,
-  context: ScopeValidatorContext
-) => boolean;
-
 export default abstract class ScopeValidator {
   pattern: Pattern;
 

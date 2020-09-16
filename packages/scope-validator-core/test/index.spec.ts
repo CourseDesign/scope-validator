@@ -1,6 +1,4 @@
-import ScopeValidatorManager from '../lib/scope-validator-manager';
-import ScopeValidatorFactory from '../lib/scope-validator-factory';
-import ScopeValidator from '../lib/scope-validator';
+import { ScopeValidatorManager, ScopeValidatorFactory } from '../lib';
 
 const TestValidator1 = ScopeValidatorFactory.create(
   // eslint-disable-next-line no-template-curly-in-string
@@ -16,23 +14,19 @@ const TestValidator1 = ScopeValidatorFactory.create(
 
 const TestValidator2 = ScopeValidatorFactory.create(
   'create:client:all',
-  (name, { parameters, received }) => {
-    return false;
-  }
+  () => false
 );
 
 describe('success', () => {
   it('check parameter', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
     scopeValidatorManager.use(TestValidator1);
-    scopeValidatorManager.context = {
-      ownerId: 'asdf',
-    };
 
     const result = scopeValidatorManager.validate(
-      'create:client:all',
-      'create:client:me',
-      'create:client:other'
+      ['create:client:all', 'create:client:me', 'create:client:other'],
+      {
+        ownerId: 'asdf',
+      }
     );
 
     expect(result).toEqual([true, true, false]);
@@ -43,14 +37,12 @@ describe('failed', () => {
   it('not match ownerId', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
     scopeValidatorManager.use(TestValidator1);
-    scopeValidatorManager.context = {
-      ownerId: 'ss',
-    };
 
     const result = scopeValidatorManager.validate(
-      'create:client:all',
-      'create:client:me',
-      'create:client:other'
+      ['create:client:all', 'create:client:me', 'create:client:other'],
+      {
+        ownerId: 'ss',
+      }
     );
 
     expect(result).toEqual([true, false, false]);
@@ -60,14 +52,12 @@ describe('failed', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
     scopeValidatorManager.use(TestValidator1);
     scopeValidatorManager.use(TestValidator2);
-    scopeValidatorManager.context = {
-      ownerId: 'asdf',
-    };
 
     const result = scopeValidatorManager.validate(
-      'create:client:all',
-      'create:client:me',
-      'create:client:other'
+      ['create:client:all', 'create:client:me', 'create:client:other'],
+      {
+        ownerId: 'asdf',
+      }
     );
 
     expect(result).toEqual([false, true, false]);
