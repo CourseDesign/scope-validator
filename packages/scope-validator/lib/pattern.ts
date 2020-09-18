@@ -24,6 +24,10 @@ export default class Pattern {
     let parameterNames = this.str.split(/(?:\${|})/g);
     parameterNames = parameterNames.filter((value, index) => index % 2);
 
+    if (parameterNames.length !== new Set(parameterNames).size) {
+      throw new Error('Parameter name must be different');
+    }
+
     const regexStr = this.str
       .replace(/(\${\w+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
