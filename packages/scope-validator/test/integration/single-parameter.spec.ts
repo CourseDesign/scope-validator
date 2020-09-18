@@ -23,6 +23,12 @@ const TestValidator3 = ScopeValidatorFactory.create<string>(
   (name, { received }) => received === 'test'
 );
 
+const TestValidator4 = ScopeValidatorFactory.create(
+  // eslint-disable-next-line no-template-curly-in-string
+  'create:${param}:${param}',
+  () => true
+);
+
 describe('success', () => {
   it('validate scope', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
@@ -93,6 +99,19 @@ describe('success', () => {
 });
 
 describe('failed', () => {
+  it('same parameter name', () => {
+    const scopeValidatorManager = new ScopeValidatorManager();
+    scopeValidatorManager.use(TestValidator4);
+
+    expect(() => {
+      scopeValidatorManager.validate([
+        'create:client:all',
+        'create:client:me',
+        'create:client:other',
+      ]);
+    }).toThrow(Error);
+  });
+
   it('not match ownerId', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
     scopeValidatorManager.use(TestValidator1);
