@@ -9,7 +9,7 @@ export default abstract class ScopeValidator<T> {
     else this.pattern = new Pattern(pattern);
   }
 
-  test(str: string): boolean {
+  canValidate(str: string): boolean {
     return this.pattern.test(str);
   }
 
