@@ -65,22 +65,8 @@ describe('success', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
     scopeValidatorManager.use(TestValidator1);
 
-    const result = scopeValidatorManager.validateOne('success:anything:ok');
+    const result = scopeValidatorManager.validate('success:anything:ok');
 
     expect(result).toEqual(true);
-  });
-
-  it('validate many', () => {
-    const scopeValidatorManager = new ScopeValidatorManager();
-    scopeValidatorManager.use(TestValidator1);
-
-    const result = scopeValidatorManager.validateMany(
-      'success:anything:ok',
-      'test:restricter:failed',
-      'test:restricter:success',
-      'failed:anything:test'
-    );
-
-    expect(result).toEqual([true, false, true, false]);
   });
 });
