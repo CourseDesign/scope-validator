@@ -22,6 +22,7 @@ export default class ScopeValidatorManager<T> {
     const matchValidators = this.scopeValidators.filter((validator) =>
       validator.canValidate(scope)
     );
+
     return (
       matchValidators.length >= 1 &&
       matchValidators.every((validator) =>

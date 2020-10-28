@@ -8,7 +8,8 @@ const TestValidator1 = ScopeValidatorFactory.create(
 
     if (restricter === 'all') return true;
     if (restricter === 'me') return received?.ownerId === 'asdf';
-    return false;
+
+    return restricter === 'test-all';
   }
 );
 
@@ -29,6 +30,12 @@ const TestValidator4 = ScopeValidatorFactory.create(
   () => true
 );
 
+const TestValidator5 = ScopeValidatorFactory.create(
+  // eslint-disable-next-line no-template-curly-in-string
+  'create:${param1}:${param2}:last',
+  () => true
+);
+
 describe('success', () => {
   it('validate scope', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
@@ -42,6 +49,17 @@ describe('success', () => {
     );
 
     expect(result).toEqual([true, true, false]);
+  });
+
+  it('validate scope: special character', () => {
+    const scopeValidatorManager = new ScopeValidatorManager();
+    scopeValidatorManager.use(TestValidator1);
+
+    const result = scopeValidatorManager.validate(['create:client:test-all'], {
+      ownerId: 'asdf',
+    });
+
+    expect(result).toEqual([true]);
   });
 
   it('validate one scope', () => {
@@ -74,6 +92,18 @@ describe('success', () => {
 
     const result = scopeValidatorManager.validate(
       ['create:client:all'],
+      'test'
+    );
+
+    expect(result).toEqual([true]);
+  });
+
+  it('validate scope special character 2', () => {
+    const scopeValidatorManager = new ScopeValidatorManager();
+    scopeValidatorManager.use(TestValidator5);
+
+    const result = scopeValidatorManager.validate(
+      ['create:test1:test2:last'],
       'test'
     );
 

@@ -5,7 +5,7 @@ export default class Pattern {
     const regex = this.str
       .replace(/(\${\w+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
-      .replace(/\*/g, '(\\w+)');
+      .replace(/\*/g, `([!@#$%^&*\\-\\w]+)`);
 
     return new RegExp(`^${regex}$`);
   }
@@ -29,9 +29,9 @@ export default class Pattern {
     }
 
     const regexStr = this.str
-      .replace(/(\${\w+})/g, '*')
+      .replace(/(\${[!@#$%^&*\-\w]+})/g, '*')
       .replace(/[$^.+?]/g, '\\$&')
-      .replace(/\*/g, '(\\w+)')
+      .replace(/\*/g, '([!@#$%^&*\\-\\w]+)')
       .replace(/(\*)/g, ')(.+)(?:')
       .replace(/^(.*)/, '(?:$&')
       .replace(/(.*)$/, '$&)');
