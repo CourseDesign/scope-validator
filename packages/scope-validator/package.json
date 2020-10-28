@@ -1,6 +1,6 @@
 {
   "name": "scope-validator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Pattern matching based Oauth2.0 scope validation library",
   "main": "dist/lib/index.js",
   "scripts": {
