@@ -7,19 +7,51 @@ type ScopeValidatorFunction<T> = (
   context: ScopeValidatorContext<T>
 ) => boolean;
 
+type ScopeValidatorAsyncFunction<T> = (
+  name: string,
+  context: ScopeValidatorContext<T>
+) => Promise<boolean>;
+
 export default class ScopeValidatorFactory<T> {
-  static create<T = Record<string, unknown>>(
+  static create<T = Record<string, string>>(
     pattern: string,
     func: ScopeValidatorFunction<T>
   ): ScopeValidator<T> {
     const CustomScopeValidator = class extends ScopeValidator<T> {
+      private readonly func;
+
       constructor() {
         super(pattern);
+
+        this.func = func;
       }
 
-      // eslint-disable-next-line class-methods-use-this
       validate(name: string, context: ScopeValidatorContext<T>): boolean {
-        return func(name, context);
+        return this.func(name, context);
+      }
+    };
+
+    return new CustomScopeValidator();
+  }
+
+  static createAsync<T = Record<string, string>>(
+    pattern: string,
+    func: ScopeValidatorAsyncFunction<T>
+  ): ScopeValidator<T> {
+    const CustomScopeValidator = class extends ScopeValidator<T> {
+      private readonly func;
+
+      constructor() {
+        super(pattern);
+
+        this.func = func;
+      }
+
+      async validate(
+        name: string,
+        context: ScopeValidatorContext<T>
+      ): Promise<boolean> {
+        return this.func(name, context);
       }
     };
 

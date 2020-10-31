@@ -18,8 +18,8 @@ export default class Pattern {
     return this.regex.test(compare);
   }
 
-  getParameters(compare: string): Record<string, unknown> {
-    const result: Record<string, unknown> = {};
+  getParameters(compare: string): Record<string, string> {
+    const result: Record<string, string> = {};
 
     let parameterNames = this.str.split(/(?:\${|})/g);
     parameterNames = parameterNames.filter((value, index) => index % 2);
@@ -38,11 +38,11 @@ export default class Pattern {
 
     const regex = new RegExp(`^${regexStr}$`);
 
-    const parameterValues = compare.match(regex);
+    const parameterValues: string[] | null = compare.match(regex);
     parameterValues?.shift();
 
     parameterNames.forEach((name, index) => {
-      result[name] = parameterValues?.[index];
+      result[name] = parameterValues?.[index] ?? '';
     });
 
     return result;

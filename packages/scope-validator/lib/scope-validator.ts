@@ -13,5 +13,8 @@ export default abstract class ScopeValidator<T> {
     return this.pattern.test(str);
   }
 
-  abstract validate(name: string, context: ScopeValidatorContext<T>): boolean;
+  abstract validate(
+    name: string,
+    context: ScopeValidatorContext<T>
+  ): boolean | Promise<boolean>;
 }
