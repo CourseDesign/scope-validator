@@ -36,6 +36,24 @@ const TestValidator5 = ScopeValidatorFactory.create(
   () => true
 );
 
+const OptionalValidator1 = ScopeValidatorFactory.create(
+  // eslint-disable-next-line no-template-curly-in-string
+  'validation-${test}',
+  (name, { parameters }) => parameters?.test === 'Hi',
+  {
+    optional: true,
+  }
+);
+
+const OptionalValidator2 = ScopeValidatorFactory.create(
+  // eslint-disable-next-line no-template-curly-in-string
+  'validation',
+  () => true,
+  {
+    optional: true,
+  }
+);
+
 describe('success', () => {
   it('validate scope', () => {
     const scopeValidatorManager = new ScopeValidatorManager();
@@ -108,6 +126,20 @@ describe('success', () => {
     );
 
     expect(result).toEqual([true]);
+  });
+
+  it('validate scope optional', () => {
+    const scopeValidatorManager = new ScopeValidatorManager();
+    scopeValidatorManager.use(OptionalValidator1);
+    scopeValidatorManager.use(OptionalValidator2);
+
+    const result = scopeValidatorManager.validate([
+      'validation-Hi',
+      'validation',
+      'validate',
+    ]);
+
+    expect(result).toEqual([true, true, false]);
   });
 });
 

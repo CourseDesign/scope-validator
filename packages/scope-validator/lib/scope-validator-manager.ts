@@ -30,17 +30,38 @@ export default class ScopeValidatorManager<T> {
 
     let result = true;
     await Promise.all(
-      matchValidators.map(async (validator) => {
-        const isCheck = await validator.validate(scope, {
-          received: context,
-          parameters: validator.pattern.getParameters(scope),
-        });
+      matchValidators
+        .filter((validator) => !validator.isOptional())
+        .map(async (validator) => {
+          const isCheck = await validator.validate(scope, {
+            received: context,
+            parameters: validator.getPattern().getParameters(scope),
+          });
 
-        if (result && !isCheck) result = false;
-      })
+          if (result && !validator.isOptional() && !isCheck) result = false;
+        })
     );
 
-    return matchValidators.length >= 1 && result;
+    let check = false;
+    await Promise.all(
+      matchValidators
+        .filter((validator) => validator.isOptional())
+        .map(async (validator) => {
+          const isCheck = await validator.validate(scope, {
+            received: context,
+            parameters: validator.getPattern().getParameters(scope),
+          });
+
+          if (isCheck) check = true;
+        })
+    );
+
+    if (
+      matchValidators.filter((validator) => validator.isOptional()).length === 0
+    )
+      check = true;
+
+    return matchValidators.length >= 1 && result && check;
   }
 
   validate(scope: string, context?: T): boolean;
@@ -55,14 +76,31 @@ export default class ScopeValidatorManager<T> {
       validator.canValidate(scope)
     );
 
-    return (
-      matchValidators.length >= 1 &&
-      matchValidators.every((validator) =>
+    let check = matchValidators
+      .filter((validator) => validator.isOptional())
+      .some((validator) =>
         validator.validate(scope, {
           received: context,
-          parameters: validator.pattern.getParameters(scope),
+          parameters: validator.getPattern().getParameters(scope),
         })
-      )
+      );
+
+    if (
+      matchValidators.filter((validator) => validator.isOptional()).length === 0
+    )
+      check = true;
+
+    return (
+      matchValidators.length >= 1 &&
+      matchValidators
+        .filter((validator) => !validator.isOptional())
+        .every((validator) =>
+          validator.validate(scope, {
+            received: context,
+            parameters: validator.getPattern().getParameters(scope),
+          })
+        ) &&
+      check
     );
   }
 }

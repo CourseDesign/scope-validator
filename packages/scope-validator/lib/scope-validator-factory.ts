@@ -12,16 +12,21 @@ type ScopeValidatorAsyncFunction<T> = (
   context: ScopeValidatorContext<T>
 ) => Promise<boolean>;
 
+type ScopeValidatorOption = {
+  optional?: boolean;
+};
+
 export default class ScopeValidatorFactory<T> {
-  static create<T = Record<string, string>>(
+  static create<T = Record<string, unknown>>(
     pattern: string,
-    func: ScopeValidatorFunction<T>
+    func: ScopeValidatorFunction<T>,
+    options?: ScopeValidatorOption
   ): ScopeValidator<T> {
     const CustomScopeValidator = class extends ScopeValidator<T> {
       private readonly func;
 
       constructor() {
-        super(pattern);
+        super(pattern, options?.optional ?? false);
 
         this.func = func;
       }
@@ -34,15 +39,16 @@ export default class ScopeValidatorFactory<T> {
     return new CustomScopeValidator();
   }
 
-  static createAsync<T = Record<string, string>>(
+  static createAsync<T = Record<string, unknown>>(
     pattern: string,
-    func: ScopeValidatorAsyncFunction<T>
+    func: ScopeValidatorAsyncFunction<T>,
+    options?: ScopeValidatorOption
   ): ScopeValidator<T> {
     const CustomScopeValidator = class extends ScopeValidator<T> {
       private readonly func;
 
       constructor() {
-        super(pattern);
+        super(pattern, options?.optional ?? false);
 
         this.func = func;
       }
